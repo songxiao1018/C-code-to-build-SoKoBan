@@ -7,6 +7,7 @@
 #include<stdlib.h>
 #include<conio.h>      // 关于按键控制
 #include<graphics.h>   // 第三方图形库 easyx
+#include<easyx.h>      // easy.h 头文件
 using namespace std;
 int m, n;              // 定义循环变量
 int flag = 0;          // 定义关卡数
@@ -66,29 +67,44 @@ int map[3][10][10] = {
 
 // 定义输出地图函数  空地0  墙1  箱子2  目的地3   人4   箱子+目的地5  人+目的地7
 void show_map() {
+    loadimage(&imgFLOOR   , _T("0.jpg"), 64, 64);
+    loadimage(&imgWALL    , _T("1.jpg"), 64, 64);
+    loadimage(&imgBOX     , _T("2.jpg"), 64, 64);
+    loadimage(&imgEMPTY   , _T("3.jpg"), 64, 64);
+    loadimage(&imgPLAYER  , _T("4.jpg"), 64, 64);
+    loadimage(&imgFULL    , _T("5.jpg"), 64, 64);
+    loadimage(&imgON      , _T("7.jpg"), 64, 64);
+
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             switch (map[flag][i][j]) {
             case FLOOR:
                 cout << "  ";
+                putimage(j * 64, i * 64, &imgFLOOR);
                 break;
             case WALL:
                 cout << "* ";
+                putimage(j * 64, i * 64, &imgWALL);
                 break;
             case BOX:
                 cout << "□";
+                putimage(j * 64, i * 64, &imgBOX);
                 break;
             case EMPTY:
                 cout << "+ ";
+                putimage(j * 64, i * 64, &imgEMPTY);
                 break;
             case PLAYER:
                 cout << "@ ";
+                putimage(j * 64, i * 64, &imgPLAYER);
                 break;
             case FULL:
                 cout << "X ";
+                putimage(j * 64, i * 64, &imgFULL);
                 break;
             case ON:
                 cout << "$ ";
+                putimage(j * 64, i * 64, &imgON);
                 break;
             }
         }
@@ -129,7 +145,7 @@ void playGame() {
         }
 
         // 推箱子
-        if ((map[flag][m - 1][n] == BOX || map[flag][m - 1][n] == FULL) && map[flag][m - 2][n] != WALL) {
+        if ((map[flag][m - 1][n] == BOX || map[flag][m - 1][n] == FULL) && (map[flag][m - 2][n] != WALL)&&(map[flag][m - 2][n] != BOX)) {
             map[flag][m][n] -= PLAYER;
             map[flag][m - 1][n] += (PLAYER - BOX);
             map[flag][m - 2][n] += BOX;
@@ -146,7 +162,7 @@ void playGame() {
         }
 
         // 推箱子
-        if ((map[flag][m][n - 1] == BOX || map[flag][m][n - 1] == FULL) && map[flag][m][n - 2] != WALL) {
+        if ((map[flag][m][n - 1] == BOX || map[flag][m][n - 1] == FULL) && map[flag][m][n - 2] != WALL && (map[flag][m][n - 2] != BOX)) {
             map[flag][m][n] -= PLAYER;
             map[flag][m][n - 1] += (PLAYER - BOX);
             map[flag][m][n - 2] += BOX;
@@ -163,7 +179,7 @@ void playGame() {
         }
 
         // 推箱子
-        if ((map[flag][m + 1][n] == BOX || map[flag][m + 1][n] == FULL) && map[flag][m + 2][n] != WALL) {
+        if ((map[flag][m + 1][n] == BOX || map[flag][m + 1][n] == FULL) && map[flag][m + 2][n] != WALL && (map[flag][m + 2][n] != BOX)) {
             map[flag][m][n] -= PLAYER;
             map[flag][m + 1][n] += (PLAYER - BOX);
             map[flag][m + 2][n] += BOX;
@@ -180,7 +196,7 @@ void playGame() {
         }
 
         // 推箱子
-        if ((map[flag][m][n + 1] == BOX || map[flag][m][n + 1] == FULL) && map[flag][m][n + 2] != WALL) {
+        if ((map[flag][m][n + 1] == BOX || map[flag][m][n + 1] == FULL) && map[flag][m][n + 2] != WALL && (map[flag][m][n + 2] != BOX)) {
             map[flag][m][n] -= PLAYER;
             map[flag][m][n + 1] += (PLAYER - BOX);
             map[flag][m][n + 2] += BOX;
@@ -210,15 +226,9 @@ yza:
 int main() {
     // 初始化窗口
     initgraph(640, 640, EW_SHOWCONSOLE | EW_DBLCLKS);
-
-    // 设置窗口标题
-    SetConsoleTitle("123");
-    // 设置绘图背景颜色为灰色
-    setbkcolor(RGB(158, 168, 220));
-
-    // 
-
- /*   while (1) {
+    //initgraph(640, 640);
+    
+    while (1) {
         // 打印地图
         show_map();
 
@@ -243,9 +253,8 @@ int main() {
 
         // 刷新屏幕
         system("cls");
-    }*/
-
-    _getch();
+        cleardevice();
+    }
 
     // 关闭图形化窗口
     closegraph();
