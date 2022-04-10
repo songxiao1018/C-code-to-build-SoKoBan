@@ -81,6 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>.</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="sokobanmap.cpp" />
     <ClCompile Include="SoKoBan_Graphical.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +152,6 @@
     <Image Include="4.jpg" />
     <Image Include="5.jpg" />
     <Image Include="7.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="sokobanmap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

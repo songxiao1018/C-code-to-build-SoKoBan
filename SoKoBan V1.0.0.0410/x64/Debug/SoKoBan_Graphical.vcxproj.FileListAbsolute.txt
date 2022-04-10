@@ -1,2 +1,3 @@
 D:\000000000000宋韩尧的项目文件夹\SoKoBan_Graphical\x64\Debug\SoKoBan_Graphical.exe
 D:\000000000000宋韩尧的项目文件夹\Graphical_SoKoBan\SoKoBan_Graphical\x64\Debug\SoKoBan_Graphical.exe
+D:\000000000000宋韩尧的项目文件夹\C-code-to-build-SoKoBan\SoKoBan V1.0.0.0410\x64\Debug\SoKoBan_Graphical.exe

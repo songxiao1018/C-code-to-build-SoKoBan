@@ -8,7 +8,6 @@
 #include<conio.h>      // 关于按键控制
 #include<graphics.h>   // 第三方图形库 easyx
 #include<easyx.h>      // easy.h 头文件
-#include<sokobanmap.h>
 
 using namespace std;
 int m, n;              // 定义循环变量
@@ -67,6 +66,18 @@ int map[3][10][10] = {
     0,0,0,0,0,0,0,0,0,0
 };
 
+// 定义游戏地图
+int GameMap[10][10] = { 0 };
+
+// 读取地图函数
+void ReadMap(int flag) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            GameMap[i][j] = map[flag][i][j];
+        }
+    }
+}
+
 // 定义输出地图函数  空地0  墙1  箱子2  目的地3   人4   箱子+目的地5  人+目的地7
 void show_map() {
     loadimage(&imgFLOOR   , _T("0.jpg"), 64, 64);
@@ -79,7 +90,7 @@ void show_map() {
 
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            switch (map[flag][i][j]) {
+            switch (GameMap[i][j]) {
             case FLOOR:
                 cout << "  ";
                 putimage(j * 64, i * 64, &imgFLOOR);
@@ -118,7 +129,7 @@ void show_map() {
 void findPlayer() {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            if (map[flag][i][j] == PLAYER || map[flag][i][j] == ON) {
+            if (GameMap[i][j] == PLAYER || GameMap[i][j] == ON) {
                 m = i;
                 n = j;
                 goto xyz;
@@ -141,7 +152,7 @@ void playGame() {
     case 'w':
     case 72:    //对于当前位置-PLAYER 前面 +PLAYER
         // 空地上走
-        if (map[flag][m - 1][n] == FLOOR || map[flag][m - 1][n] == EMPTY) {
+        /*if (map[flag][m - 1][n] == FLOOR || map[flag][m - 1][n] == EMPTY) {
             map[flag][m - 1][n] += PLAYER;
             map[flag][m][n] -= PLAYER;
         }
@@ -151,6 +162,15 @@ void playGame() {
             map[flag][m][n] -= PLAYER;
             map[flag][m - 1][n] += (PLAYER - BOX);
             map[flag][m - 2][n] += BOX;
+        }*/
+        if (GameMap[m - 1][n] == FLOOR || GameMap[m - 1][n] == EMPTY) {
+            GameMap[m - 1][n] += PLAYER;
+            GameMap[m][n] -= PLAYER;
+        }
+        else if ((GameMap[m - 1][n] == BOX || GameMap[m - 1][n] == FULL) && (GameMap[m - 2][n] == FLOOR || GameMap[m - 2][n] == EMPTY)) {
+            GameMap[m][n] -= PLAYER;
+            GameMap[m - 1][n] += (PLAYER - BOX);
+            GameMap[m - 2][n] += BOX;
         }
         break;
 
@@ -158,7 +178,7 @@ void playGame() {
     case 'a':
     case 75:
         // 空地走
-        if (map[flag][m][n - 1] == 0 || map[flag][m][n - 1] == 3) {
+        /*if (map[flag][m][n - 1] == 0 || map[flag][m][n - 1] == 3) {
             map[flag][m][n - 1] += PLAYER;
             map[flag][m][n] -= PLAYER;
         }
@@ -168,6 +188,15 @@ void playGame() {
             map[flag][m][n] -= PLAYER;
             map[flag][m][n - 1] += (PLAYER - BOX);
             map[flag][m][n - 2] += BOX;
+        }*/
+        if (GameMap[m][n - 1] == FLOOR || GameMap[m][n - 1] == EMPTY) {
+            GameMap[m][n - 1] += PLAYER;
+            GameMap[m][n] -= PLAYER;
+        }
+        else if ((GameMap[m][n - 1] == BOX || GameMap[m][n - 1] == FULL) && (GameMap[m][n - 2] == FLOOR || GameMap[m][n - 2] == EMPTY)) {
+            GameMap[m][n] -= PLAYER;
+            GameMap[m][n - 1] += (PLAYER - BOX);
+            GameMap[m][n - 2] += BOX;
         }
         break;
 
@@ -175,7 +204,7 @@ void playGame() {
     case 's':
     case 80:
         // 空地走
-        if (map[flag][m + 1][n] == 0 || map[flag][m + 1][n] == 3) {
+        /*if (map[flag][m + 1][n] == 0 || map[flag][m + 1][n] == 3) {
             map[flag][m + 1][n] += PLAYER;
             map[flag][m][n] -= PLAYER;
         }
@@ -185,6 +214,15 @@ void playGame() {
             map[flag][m][n] -= PLAYER;
             map[flag][m + 1][n] += (PLAYER - BOX);
             map[flag][m + 2][n] += BOX;
+        }*/
+        if (GameMap[m + 1][n] == FLOOR || GameMap[m + 1][n] == EMPTY) {
+            GameMap[m + 1][n] += PLAYER;
+            GameMap[m][n] -= PLAYER;
+        }
+        else if ((GameMap[m + 1][n] == BOX || GameMap[m + 1][n] == FULL) && (GameMap[m + 2][n] == FLOOR || GameMap[m + 2][n] == EMPTY)) {
+            GameMap[m][n] -= PLAYER;
+            GameMap[m + 1][n] += (PLAYER - BOX);
+            GameMap[m + 2][n] += BOX;
         }
         break;
 
@@ -192,7 +230,7 @@ void playGame() {
     case 'd':
     case 77:
         // 空地走
-        if (map[flag][m][n + 1] == 0 || map[flag][m][n + 1] == 3) {
+        /*if (map[flag][m][n + 1] == 0 || map[flag][m][n + 1] == 3) {
             map[flag][m][n + 1] += PLAYER;
             map[flag][m][n] -= PLAYER;
         }
@@ -202,6 +240,15 @@ void playGame() {
             map[flag][m][n] -= PLAYER;
             map[flag][m][n + 1] += (PLAYER - BOX);
             map[flag][m][n + 2] += BOX;
+        }*/
+        if (GameMap[m][n + 1] == FLOOR || GameMap[m][n + 1] == EMPTY) {
+            GameMap[m][n + 1] += PLAYER;
+            GameMap[m][n] -= PLAYER;
+        }
+        else if ((GameMap[m][n + 1] == BOX || GameMap[m][n + 1] == FULL) && (GameMap[m][n + 2] == FLOOR || GameMap[m][n + 2] == EMPTY)) {
+            GameMap[m][n] -= PLAYER;
+            GameMap[m][n + 1] += (PLAYER - BOX);
+            GameMap[m][n + 2] += BOX;
         }
         break;
 
@@ -213,11 +260,11 @@ void playGame() {
 
 // 判断结束
 bool gameEND() {
-    bool f = 1;
+    bool f = 0;
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            if (map[flag][i][j] == BOX) {
-                f = 0;
+            if (GameMap[i][j] == BOX) {
+                f = 1;
                 goto yza;
             }
         }
@@ -225,23 +272,33 @@ bool gameEND() {
 yza:
     return f;
 }
-long long rmm_size;
-long long cache_size;
+
 int main() {
     // 初始化窗口
     initgraph(640, 640, EW_SHOWCONSOLE | EW_DBLCLKS);
     //initgraph(640, 640);
-    ShowText(rmm_size, cache_size);
+
+    flag = 0;
     while (1) {
-        // 打印地图
-        show_map();
+        // 读取地图
+        ReadMap(flag);
+        
+        while (gameEND()) {
+            // 打印地图
+            show_map();
 
-        // 开始游戏
-        findPlayer();
-        playGame();
+            // 开始游戏
+            findPlayer();
+            playGame();
 
-        // 判断游戏结束
-        if (gameEND()) {
+            // 判断游戏结束
+            /**/
+
+            // 刷新屏幕
+            system("cls");
+            cleardevice();
+        }
+        if (!gameEND()) {
             system("cls");
             show_map();
 
@@ -254,11 +311,8 @@ int main() {
             }
 
         }
-
-        // 刷新屏幕
-        system("cls");
-        cleardevice();
     }
+    
 
     // 关闭图形化窗口
     closegraph();
