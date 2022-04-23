@@ -119,11 +119,11 @@ void findPlayer() {
             if (map[flag][i][j] == PLAYER || map[flag][i][j] == ON) {
                 m = i;
                 n = j;
-                goto xyz;
+                //goto xyz;
             }
         }
     }
-xyz:;
+//xyz:;
 }
 
 // 玩游戏
@@ -145,7 +145,7 @@ void playGame() {
         }
 
         // 推箱子
-        if ((map[flag][m - 1][n] == BOX || map[flag][m - 1][n] == FULL) && (map[flag][m - 2][n] != WALL)&&(map[flag][m - 2][n] != BOX)) {
+        if ((map[flag][m - 1][n] == BOX || map[flag][m - 1][n] == FULL) && (map[flag][m - 2][n] != WALL)&&(map[flag][m - 2][n] != BOX)&&(map[flag][m - 2][n] != FULL)) {
             map[flag][m][n] -= PLAYER;
             map[flag][m - 1][n] += (PLAYER - BOX);
             map[flag][m - 2][n] += BOX;
@@ -242,8 +242,9 @@ int main() {
             show_map();
 
             if (flag == 2) {
-                cout << "you win !";
-                break;
+                //cout << "you win !";
+                flag = 0;
+                //break;
             }
             else {
                 flag++;

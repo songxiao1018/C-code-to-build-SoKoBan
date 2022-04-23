@@ -327,8 +327,9 @@ int main() {
             show_map();
 
             if (flag == 2) {
-                cout << "you win !";
-                break;
+                //cout << "you win !";
+                //break;
+                flag = 0;
             }
             else {
                 flag++;
